@@ -15,8 +15,7 @@ const test = async () => {
 
   //await p.toggleOnOff();
   //await p.setColor("ffffff");
-  //await p.setColor("FF0000", ANIM_MODE_FLOW);
-  //await p.setColor("0000FF", ANIM_MODE_STATIC);
+  //await p.setAnimationMode(ANIM_MODE_FLOW);
   //await p.setAnimationSpeed(255);
   //await p.setDreamMode(1);
   //await p.setColor("FF6717", ANIM_MODE_STATIC);

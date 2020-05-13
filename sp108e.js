@@ -112,10 +112,20 @@ class sp108e {
   /**
    * Sets the color of the leds
    * @param {string} hexColor Hex color without hash. e.g, "FFAABB"
+   */
+  setColor = async (hexColor) => {
+    const status = await this.getStatus();
+    if (status.animationMode === "00") {
+      await this.send(CMD_SET_ANIMATION_MODE, exports.ANIM_MODE_STATIC);
+    }
+    return await this.send(CMD_SET_COLOR, hexColor, 0);
+  };
+
+  /**
+   * Sets the animation mode of the leds (for single color mode)
    * @param {string} animMode Animation mode. Use the ANIM_MODE_XXXX constants, otherwise 2 character hex. e.g, "CD". Defaults to ANIM_MODE_STATIC
    */
-  setColor = async (hexColor, animMode = exports.ANIM_MODE_STATIC) => {
-    await this.send(CMD_SET_COLOR, hexColor, 0);
+  setAnimationMode = async (animMode) => {
     return await this.send(CMD_SET_ANIMATION_MODE, animMode);
   };
 
@@ -158,11 +168,16 @@ class sp108e {
     }
 
     await client.end();
-    return response ? response.toString("hex") : null;
+
+    if (responseLength === 0) {
+      // Just a little hacky sleep to stop the sp108e getting overwhelmed by sequential writes
+      await this.sleep();
+    }
+    return response ? response.toString("hex") : "";
   };
 
   sleep = () => {
-    return new Promise((resolve) => setTimeout(resolve, 1000));
+    return new Promise((resolve) => setTimeout(resolve, 250));
   };
 }
 

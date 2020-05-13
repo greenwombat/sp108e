@@ -98,12 +98,18 @@ runCommand = async (cmd) => {
   if (cmd[0] === "normal" || cmd[0] === "reset" || cmd[0] === "warm") {
     await p.on();
     await p.setColor("FF6717");
-    await p.setBrightness(5);
+    return await p.setBrightness(5);
   }
 
   if (cmd[0] === "power") {
     try {
       return await p.toggleOnOff();
+    } catch (err) {}
+  }
+
+  if (cmd[0] === "status") {
+    try {
+      return await p.getStatus();
     } catch (err) {}
   }
 

@@ -44,8 +44,7 @@ const test = async () => {
   await p.on();
   await p.toggleOnOff();
   await p.setColor("ffffff");
-  await p.setColor("FF0000", ANIM_MODE_FLOW);
-  await p.setColor("0000FF", ANIM_MODE_STATIC);
+  await p.setAnimationMode(ANIM_MODE_FLOW);
   await p.setAnimationSpeed(255);
   await p.setDreamMode(1);
   await p.setColor("FF6717", ANIM_MODE_STATIC);
@@ -82,7 +81,7 @@ The sever will run on localhost and you can manage your leds with simple GET req
 The web server has been written so that it can be called with natural language allowing it to be used with Google Assistant using IFTTT:
 
 - http://localhost:3000/?command=color red
-- http://localhost:3000/?command=color raindow
+- http://localhost:3000/?command=color rainbow
 - http://localhost:3000/?command=brightness 100
 - http://localhost:3000/?command=on
 
