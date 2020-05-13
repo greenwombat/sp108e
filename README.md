@@ -36,13 +36,13 @@ const sp108e_options = {
 const test = async () => {
   const p = new sp108e(sp108e_options);
 
-  //await p.toggleOnOff();
-  //await p.setColor("ffffff");
-  //await p.setColor("FF0000", ANIM_MODE_FLOW);
-  //await p.setColor("0000FF", ANIM_MODE_STATIC);
-  //await p.setAnimationSpeed(255);
-  //await p.setDreamMode(1);
-  //await p.setColor("FF6717", ANIM_MODE_STATIC);
+  await p.toggleOnOff();
+  await p.setColor("ffffff");
+  await p.setColor("FF0000", ANIM_MODE_FLOW);
+  await p.setColor("0000FF", ANIM_MODE_STATIC);
+  await p.setAnimationSpeed(255);
+  await p.setDreamMode(1);
+  await p.setColor("FF6717", ANIM_MODE_STATIC);
   await p.setBrightness(255);
 };
 ```
@@ -63,11 +63,11 @@ Update `examples/service.js` with your hostname. The port should be correct.
 
 The sever will run on localhost and you can manage your leds with simple GET requests:
 
-  http://localhost:3000/?toggle
-  http://localhost:3000/?brightness=255
-  http://localhost:3000/?color=ffffff&animmode=D3
-  http://localhost:3000/?dreammode=1
-  http://localhost:3000/?animspeed=128
+  * http://localhost:3000/?toggle
+  * http://localhost:3000/?brightness=255
+  * http://localhost:3000/?color=ffffff&animmode=D3
+  * http://localhost:3000/?dreammode=1
+  * http://localhost:3000/?animspeed=128
   
 ## Contributing
 
