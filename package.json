@@ -1,0 +1,20 @@
+{
+  "name": "sp108e",
+  "version": "0.0.1",
+  "description": "This node library will send commands to the sp108e LED library. It also contains a simple RESTful node service to control LEDs using this controller.",
+  "main": "server/server.js",
+  "scripts": {
+    "example": "node examples/example.js",
+    "server": "node examples/server.js",
+    "hotserver": "nodemon examples/server.js"
+  },
+  "keywords": [
+    "sp108e"
+  ],
+  "author": "George Burrows",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "promise-socket": "^6.0.3"
+  }
+}
