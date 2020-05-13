@@ -1,20 +1,24 @@
 {
   "name": "sp108e",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "This node library will send commands to the sp108e LED library. It also contains a simple RESTful node service to control LEDs using this controller.",
-  "main": "server/server.js",
+  "main": "sp108e",
   "scripts": {
     "example": "node examples/example.js",
     "server": "node examples/server.js",
     "hotserver": "nodemon examples/server.js"
   },
   "keywords": [
-    "sp108e"
+    "sp108e",
+    "led controller",
+    "npm"
   ],
   "author": "George Burrows",
   "license": "ISC",
   "dependencies": {
+    "english2number": "^1.0.8",
     "express": "^4.17.1",
     "promise-socket": "^6.0.3"
-  }
+  },
+  "homepage": "https://github.com/greenwombat/sp108e"
 }

@@ -20,7 +20,8 @@ const test = async () => {
   //await p.setAnimationSpeed(255);
   //await p.setDreamMode(1);
   //await p.setColor("FF6717", ANIM_MODE_STATIC);
-  await p.setBrightness(255);
+  //await p.setBrightness(255);
+  console.log("Status", await p.getStatus());
 };
 
 test();

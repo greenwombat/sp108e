@@ -10,6 +10,8 @@ const ANIM_MODE_STATIC = "D3";
 
 const WARM_WHITE = "FF6717"; // Matches house lights
 
+const CMD_GET_NAME = "77";
+const CMD_GET_STATUS = "10";
 const CMD_PREFIX = "38";
 const CMD_SUFFIX = "83";
 const CMD_TOGGLE = "aa";
@@ -44,7 +46,59 @@ class sp108e {
    * Toggles the led lights on or off
    */
   toggleOnOff = async () => {
-    return await this.send(CMD_TOGGLE, undefined, 17);
+    return await this.send(CMD_TOGGLE, NO_PARAMETER, 17);
+  };
+
+  /**
+   * Toggles the led lights on
+   */
+  off = async () => {
+    const status = await this.getStatus();
+    if (status.on) {
+      return await this.toggleOnOff();
+    } else {
+      console.log("already off");
+    }
+  };
+
+  /**
+   * Toggles the led lights on
+   */
+  on = async () => {
+    const status = await this.getStatus();
+    if (!status.on) {
+      return await this.toggleOnOff();
+    } else {
+      console.log("already on");
+    }
+  };
+
+  /**
+   * Toggles the led lights off
+   */
+  toggleOnOff = async () => {
+    return await this.send(CMD_TOGGLE, NO_PARAMETER, 17);
+  };
+
+  /**
+   * Gets the status of the sp108e, on/off, color, etc
+   */
+  getStatus = async () => {
+    const response = await this.send(CMD_GET_STATUS, NO_PARAMETER, 17);
+    const status = {
+      on: response.substring(2, 4) === "01",
+      animationMode: response.substring(4, 6),
+      speed: parseInt(response.substring(6, 8), 16),
+      brightness: parseInt(response.substring(8, 10), 16),
+      colorOrder: response.substring(10, 12),
+      ledsPerSegment: parseInt(response.substring(12, 16), 16),
+      numberOfSegments: parseInt(response.substring(16, 20), 16),
+      color: response.substring(20, 26),
+      icType: response.substring(26, 28),
+      recordedPatterns: parseInt(response.substring(28, 30), 16),
+      whiteBrightness: parseInt(response.substring(30, 32), 16),
+    };
+    return status;
   };
 
   /**
