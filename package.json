@@ -1,6 +1,6 @@
 {
   "name": "sp108e",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "This node library will send commands to the sp108e LED library. It also contains a simple RESTful node service to control LEDs using this controller.",
   "main": "sp108e",
   "scripts": {
