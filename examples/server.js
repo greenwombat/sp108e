@@ -19,10 +19,7 @@
  * NOTE: Update the ip address for your own device
  */
 const express = require("express");
-const toNumber = require("english2number");
 const { sp108e } = require("../sp108e");
-const COLOR_MAP = require("../colors.js");
-const ANIMATION_MAP = require("../animations.js");
 
 const app = express();
 const port = 3000;
@@ -32,98 +29,8 @@ const sp108e_options = {
   port: 8189,
 };
 
-runCommand = async (cmd) => {
-  console.log("Running command:", cmd);
-  const p = new sp108e(sp108e_options);
-
-  if (cmd[0] === "color" || cmd[0] === "colour") {
-    const colorname = cmd.slice(1).join("").toLowerCase();
-    const hex = COLOR_MAP[colorname];
-    if (hex) {
-      console.log("Setting color", colorname, hex);
-      return await p.setColor(hex);
-    }
-
-    const colorAnimation = ANIMATION_MAP[colorname];
-    if (colorAnimation) {
-      console.log("Setting color", colorname, hex);
-      return await p.setDreamMode(colorAnimation);
-    }
-
-    if (colorname.length === 6) {
-      console.log("Setting color", colorname, hex);
-      return await p.setColor(colorname);
-    }
-
-    try {
-      const patternNumber = parseInt(cmd[1]) || getNumber(colorname);
-      return await p.setDreamMode(patternNumber);
-    } catch (err) {}
-
-    console.log("Unable to find color", colorname);
-  }
-
-  if (cmd[0] === "speed") {
-    try {
-      const speed = getNumber(cmd[1]);
-      return await p.setSpeed(speed);
-    } catch (err) {}
-  }
-
-  if (cmd[0] === "brightness") {
-    try {
-      const brightness = parseInt(cmd[1]) || getNumber(colorname);
-      return await p.setBrightness(brightness);
-    } catch (err) {}
-  }
-
-  if (cmd[0] === "toggle" || cmd[0] === "power" || cmd[0] === "turn") {
-    if (cmd.length === 1) {
-      return await p.toggleOnOff();
-    } else if (cmd[1] === "off") {
-      return await p.off();
-    } else {
-      return await p.on();
-    }
-  }
-
-  if (cmd[0] === "on") {
-    return await p.on();
-  }
-
-  if (cmd[0] === "off") {
-    return await p.off();
-  }
-
-  if (cmd[0] === "normal" || cmd[0] === "reset" || cmd[0] === "warm") {
-    await p.on();
-    await p.setColor("FF6717");
-    return await p.setBrightness(5);
-  }
-
-  if (cmd[0] === "power") {
-    try {
-      return await p.toggleOnOff();
-    } catch (err) {}
-  }
-
-  if (cmd[0] === "status") {
-    try {
-      return await p.getStatus();
-    } catch (err) {}
-  }
-
-  return `Unable to process ${cmd}`;
-};
-
-getNumber = (s) => {
-  if (s === "to") {
-    return 2;
-  }
-  return toNumber(s);
-};
-
 app.get("/", async (req, res) => {
+  const p = new sp108e(sp108e_options);
   let responses = [];
   try {
     for (var propName in req.query) {
@@ -132,12 +39,16 @@ app.get("/", async (req, res) => {
         // eg:
         //      "Hey Google, Front lights color red"  would call
         //      "?command=color red"
-        responses.push(await runCommand(req.query.command.split(" ")));
+        responses.push(
+          await p.runNaturalLanguageCommand(req.query.command.split(" "))
+        );
       } else if (req.query.hasOwnProperty(propName)) {
         // By passing in parameters directly you can change multiple settings at once
         // eg:
         //      "?power=on&color=red&brightness=200"
-        responses.push(await runCommand([propName, req.query[propName]]));
+        responses.push(
+          await p.runNaturalLanguageCommand([propName, req.query[propName]])
+        );
       }
     }
     res.send({ sp108e: "OK", responses });

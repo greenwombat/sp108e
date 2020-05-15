@@ -4,7 +4,7 @@
 
 This is a Javascript library to control SP108E Wi-Fi controller.
 
-There is also a very basic example Node Express Web Server that will get you up and running really quickly controlling your sp108e LED light strips from a browser or from Google Home / Google Assistant using IFTTT.
+There are also very basic Express Web Server and AWS Lambda examples that will get you up and running really quickly controlling your sp108e LED light strips from a browser or from Google Home / Google Assistant using IFTTT.
 
 ## Let's make this clear!
 
@@ -78,7 +78,7 @@ The sever will run on localhost and you can manage your leds with simple GET req
 
 ### Using sp108e with Google Home / Google Assistant
 
-The web server has been written so that it can be called with natural language allowing it to be used with Google Assistant using IFTTT:
+The web server and lambda have both been written so that it can be called with natural language allowing it to be used with Google Assistant using IFTTT:
 
 - http://localhost:3000/?command=color red
 - http://localhost:3000/?command=color rainbow
@@ -92,7 +92,7 @@ If You say "set front lights $", then Make a web request
 
 What do you want to say? set front lights $
 What do you want the Assistant to say in response? no problem, setting front lights $
-URL: http://mydomain:3000/?command={{TextField}}
+URL: http://mydomain:3000/?command={{TextField}}    OR    your AWS API Gateway url
 Method: GET
 ContentType: text/plain
 ```

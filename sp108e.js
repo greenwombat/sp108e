@@ -4,6 +4,9 @@
  * Please contribute and improve. Its very basic right now!
  */
 const net = require("net");
+const toNumber = require("english2number");
+const COLOR_MAP = require("./colors.js");
+const ANIMATION_MAP = require("./animations.js");
 const { PromiseSocket } = require("promise-socket");
 
 const ANIM_MODE_STATIC = "D3";
@@ -178,6 +181,96 @@ class sp108e {
 
   sleep = () => {
     return new Promise((resolve) => setTimeout(resolve, 250));
+  };
+
+  getNaturalLanguageNumber = (s) => {
+    if (s === "to") {
+      return 2;
+    }
+    return toNumber(s);
+  };
+
+  runNaturalLanguageCommand = async (cmd) => {
+    console.log("Running natural language command:", cmd);
+    if (cmd[0] === "color" || cmd[0] === "colour") {
+      const colorname = cmd.slice(1).join("").toLowerCase();
+      const hex = COLOR_MAP[colorname];
+      if (hex) {
+        console.log("Setting color", colorname, hex);
+        return await this.setColor(hex);
+      }
+
+      const colorAnimation = ANIMATION_MAP[colorname];
+      if (colorAnimation) {
+        console.log("Setting color", colorname, hex);
+        return await this.setDreamMode(colorAnimation);
+      }
+
+      if (colorname.length === 6) {
+        console.log("Setting color", colorname, hex);
+        return await this.setColor(colorname);
+      }
+
+      try {
+        const patternNumber =
+          parseInt(cmd[1]) || this.getNaturalLanguageNumber(colorname);
+        return await this.setDreamMode(patternNumber);
+      } catch (err) {}
+
+      console.log("Unable to find color", colorname);
+    }
+
+    if (cmd[0] === "speed") {
+      try {
+        const speed = this.getNaturalLanguageNumber(cmd[1]);
+        return await this.setSpeed(speed);
+      } catch (err) {}
+    }
+
+    if (cmd[0] === "brightness") {
+      try {
+        const brightness = parseInt(cmd[1]) || getNumber(colorname);
+        return await this.setBrightness(brightness);
+      } catch (err) {}
+    }
+
+    if (cmd[0] === "toggle" || cmd[0] === "power" || cmd[0] === "turn") {
+      if (cmd.length === 1) {
+        return await this.toggleOnOff();
+      } else if (cmd[1] === "off") {
+        return await this.off();
+      } else {
+        return await this.on();
+      }
+    }
+
+    if (cmd[0] === "on") {
+      return await this.on();
+    }
+
+    if (cmd[0] === "off") {
+      return await this.off();
+    }
+
+    if (cmd[0] === "normal" || cmd[0] === "reset" || cmd[0] === "warm") {
+      await this.on();
+      await this.setColor("FF6717");
+      return await this.setBrightness(5);
+    }
+
+    if (cmd[0] === "power") {
+      try {
+        return await this.toggleOnOff();
+      } catch (err) {}
+    }
+
+    if (cmd[0] === "status") {
+      try {
+        return await this.getStatus();
+      } catch (err) {}
+    }
+
+    return `Unable to process ${cmd}`;
   };
 }
 
