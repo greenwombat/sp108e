@@ -255,6 +255,7 @@ class sp108e {
     if (cmd[0] === "normal" || cmd[0] === "reset" || cmd[0] === "warm") {
       await this.on();
       await this.setColor("FF6717");
+      await this.setAnimationMode(ANIM_MODE_STATIC);
       return await this.setBrightness(5);
     }
 
