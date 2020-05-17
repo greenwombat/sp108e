@@ -20,6 +20,8 @@
  */
 const express = require("express");
 const { sp108e } = require("../sp108e");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const port = 3000;
@@ -30,6 +32,13 @@ const sp108e_options = {
 };
 
 app.get("/", async (req, res) => {
+  console.log(req.query);
+  if (Object.keys(req.query).length === 0) {
+    const html = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf8");
+    res.send(html);
+    return;
+  }
+
   const p = new sp108e(sp108e_options);
   let responses = [];
   try {
@@ -51,11 +60,12 @@ app.get("/", async (req, res) => {
         );
       }
     }
+
     res.send({ sp108e: "OK", responses });
   } catch (err) {
     console.log(err);
     responses.push(err);
-    res.send({ sp108e: "FAIL", responses });
+    res.send({ sp108e: "FAIL", err: err.toString() });
   }
 });
 

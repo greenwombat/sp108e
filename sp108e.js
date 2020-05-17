@@ -90,7 +90,7 @@ class sp108e {
     const response = await this.send(CMD_GET_STATUS, NO_PARAMETER, 17);
     const status = {
       on: response.substring(2, 4) === "01",
-      animationMode: response.substring(4, 6),
+      animationMode: parseInt(response.substring(4, 6), 16) + 1,
       speed: parseInt(response.substring(6, 8), 16),
       brightness: parseInt(response.substring(8, 10), 16),
       colorOrder: response.substring(10, 12),
@@ -234,6 +234,39 @@ class sp108e {
       } catch (err) {}
     }
 
+    if (cmd[0] === "dreammode") {
+      try {
+        const dreamode = parseInt(cmd[1]) || getNumber(colorname);
+        console.log("d", dreamode);
+        return await this.setDreamMode(dreamode);
+      } catch (err) {
+        const random = Math.ceil(Math.random() * 180);
+        return await this.setDreamMode(random);
+      }
+    }
+
+    if (cmd[0] === "next") {
+      try {
+        const status = await this.getStatus();
+        let animation = status.animationMode + 1;
+        if (animation > 180) animation = 1;
+        return await this.setDreamMode(animation);
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+
+    if (cmd[0] === "previous") {
+      try {
+        const status = await this.getStatus();
+        let animation = status.animationMode - 1;
+        if (animation < 1) animation = 180;
+        return await this.setDreamMode(animation);
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+
     if (cmd[0] === "toggle" || cmd[0] === "power" || cmd[0] === "turn") {
       if (cmd.length === 1) {
         return await this.toggleOnOff();
@@ -250,6 +283,10 @@ class sp108e {
 
     if (cmd[0] === "off") {
       return await this.off();
+    }
+
+    if (cmd[0] === "static") {
+      await this.setAnimationMode(ANIM_MODE_STATIC);
     }
 
     if (cmd[0] === "normal" || cmd[0] === "reset" || cmd[0] === "warm") {

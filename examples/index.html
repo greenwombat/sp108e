@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Lights Controller</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro"></script>
+
+    <script>
+      function runCommand(command) {
+        console.log(command);
+        fetch("/?command=" + command);
+        return false;
+      }
+    </script>
+  </head>
+  <body>
+    <p>
+      <a href="#" onclick="return runCommand('on')">on</a>
+      <a href="#" onclick="return runCommand('off')">off</a>
+      <a href="#" onclick="return runCommand('reset')">reset</a>
+    </p>
+    <p>
+      Brightness:
+      <a href="#" onclick="return runCommand('brightness 5')">low</a>
+      <a href="#" onclick="return runCommand('brightness 125')">medium</a>
+      <a href="#" onclick="return runCommand('brightness 255')">high</a>
+    </p>
+    <p>
+      Animation:
+      <a href="#" onclick="return runCommand('static')">Static</a>
+      <a href="#" onclick="return runCommand('dreammode 1')">Rainbow</a>
+      <a href="#" onclick="return runCommand('dreammode')">Random</a>
+      <a href="#" onclick="return runCommand('previous')">Previous</a>
+      <a href="#" onclick="return runCommand('next')">Next</a>
+    </p>
+    <p>
+      <div class="wheel" id="colorWheelDemo"></div>
+      <script>
+        const colorWheel = new iro.ColorPicker("#colorWheelDemo", { width: 250 });
+        colorWheel.on('color:change', function(color, changes){
+          runCommand("color " + color.hexString.substring(1));
+        });
+      </script>
+    </p>
+  </body>
+</html>
