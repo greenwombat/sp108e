@@ -7,6 +7,7 @@ const net = require("net");
 const toNumber = require("english2number");
 const COLOR_MAP = require("./colors.js");
 const ANIMATION_MAP = require("./animations.js");
+const Push = require("pushover-notifications");
 const { PromiseSocket } = require("promise-socket");
 
 const ANIM_MODE_STATIC = "D3";
@@ -192,6 +193,29 @@ class sp108e {
 
   runNaturalLanguageCommand = async (cmd) => {
     console.log("Running natural language command:", cmd);
+
+    if (cmd.length !== 2 || cmd[1] !== "1") {
+      const p = new Push({
+        user: "uvmucigtbcwe51fc5wxexwwnoyt8ur",
+        token: "amqq49fjegfbf3ihizti13f1cwd6uz",
+      });
+
+      const msg = {
+        // These values correspond to the parameters detailed on https://pushover.net/api
+        // 'message' is required. All other values are optional.
+        message: cmd,
+        title: "Lights changed",
+        device: "GeorgesIphone",
+        //priority: 1,
+      };
+
+      p.send(msg, function (err, result) {
+        if (err) {
+          console.log("Failed sending push: " + err);
+        }
+      });
+    }
+
     if (cmd[0] === "color" || cmd[0] === "colour") {
       const colorname = cmd.slice(1).join("").toLowerCase();
       const hex = COLOR_MAP[colorname];
