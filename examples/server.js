@@ -27,7 +27,7 @@ const app = express();
 const port = 3000;
 
 const sp108e_options = {
-  host: "192.168.86.205",
+  host: "192.168.86.205", // front lights
   port: 8189,
 };
 
@@ -39,7 +39,10 @@ app.get("/", async (req, res) => {
     return;
   }
 
-  const p = new sp108e(sp108e_options);
+  const p = new sp108e({
+    host: req.query.host || sp108e_options.host,
+    port: req.query.port || sp108e_options.port,
+  });
   let responses = [];
   try {
     for (var propName in req.query) {
@@ -51,13 +54,15 @@ app.get("/", async (req, res) => {
         responses.push(
           await p.runNaturalLanguageCommand(req.query.command.split(" "))
         );
-      } else if (req.query.hasOwnProperty(propName)) {
-        // By passing in parameters directly you can change multiple settings at once
-        // eg:
-        //      "?power=on&color=red&brightness=200"
-        responses.push(
-          await p.runNaturalLanguageCommand([propName, req.query[propName]])
-        );
+      } else if (propName !== "host" && propName !== "port") {
+        if (req.query.hasOwnProperty(propName)) {
+          // By passing in parameters directly you can change multiple settings at once
+          // eg:
+          //      "?power=on&color=red&brightness=200"
+          responses.push(
+            await p.runNaturalLanguageCommand([propName, req.query[propName]])
+          );
+        }
       }
     }
 
