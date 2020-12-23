@@ -20,7 +20,8 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
-    "promise-socket": "^6.0.3"
+    "promise-socket": "^6.0.3",
+    "pushover-notifications": "^1.2.2"
   },
   "homepage": "https://github.com/greenwombat/sp108e"
 }

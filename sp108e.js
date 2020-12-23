@@ -7,6 +7,7 @@ const net = require("net");
 const toNumber = require("english2number");
 const COLOR_MAP = require("./colors.js");
 const ANIMATION_MAP = require("./animations.js");
+const Push = require("pushover-notifications");
 const { PromiseSocket } = require("promise-socket");
 
 const ANIM_MODE_STATIC = "D3";
@@ -176,6 +177,7 @@ class sp108e {
       // Just a little hacky sleep to stop the sp108e getting overwhelmed by sequential writes
       await this.sleep();
     }
+
     return response ? response.toString("hex") : "";
   };
 
@@ -192,6 +194,7 @@ class sp108e {
 
   runNaturalLanguageCommand = async (cmd) => {
     console.log("Running natural language command:", cmd);
+
     if (cmd[0] === "color" || cmd[0] === "colour") {
       const colorname = cmd.slice(1).join("").toLowerCase();
       const hex = COLOR_MAP[colorname];

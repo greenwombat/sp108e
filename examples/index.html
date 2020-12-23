@@ -8,7 +8,14 @@
     <script>
       function runCommand(command) {
         console.log(command);
-        fetch("/?command=" + command);
+        let url = "?command=" + command;
+
+        // Pass in a hostname for the sp108e using #hostname - only required if not using the default in server.js
+        const hostname = window.location.hash.split("#")[1];
+        if (hostname) {
+          url+= "&host=" + hostname;
+        }
+        fetch(url);
         return false;
       }
     </script>
@@ -73,7 +80,9 @@
     </p>
     <p>
       <a href="#" onclick="return runCommand('brightness 5')"><i class="far fa-sun dim"></i></div></a>
-      <a href="#" onclick="return runCommand('brightness 128')"><i class="far fa-sun"></i></div></a>
+      <a href="#" onclick="return runCommand('brightness 25')"><i class="far fa-sun"></i></div></a>
+      <a href="#" onclick="return runCommand('brightness 75')"><i class="far fa-sun"></i></div></a>
+      <a href="#" onclick="return runCommand('brightness 150')"><i class="far fa-sun"></i></div></a>
       <a href="#" onclick="return runCommand('brightness 255')"><i class="fas fa-sun"></i></div></a>
     </p>
     <p>
