@@ -24,6 +24,7 @@ const CMD_SET_BRIGHTNESS = "2a"; // Param: 00-FF
 const CMD_SET_SPEED = "03"; // Param: 00-FF
 const CMD_SET_COLOR = "22"; // RGB: 000000-FFFFFF
 const CMD_SET_DREAM_MODE = "2C"; // Param: 1-180
+const CMD_SET_DREAM_MODE_AUTO = "06"; // Param: 00
 
 const NO_PARAMETER = "000000";
 
@@ -151,6 +152,14 @@ class sp108e {
     return await this.send(CMD_SET_DREAM_MODE, this.intToHex(mode - 1), 0);
   };
 
+  /**
+   * Sets the dreamcolor animation style (0 =auto, 1=rainbow) from 1-180
+   * @param {integer} speed any integer 1-180
+   */
+  setDreamModeAuto = async (moe) => {
+    return await this.send(CMD_SET_DREAM_MODE_AUTO);
+  };
+
   intToHex = (int) => {
     return int.toString(16).padStart(2, "0");
   };
@@ -249,7 +258,7 @@ class sp108e {
     }
 
     if (cmd[0] === "auto" || cmd[0] === "loop") {
-      return await this.setDreamMode(0);
+      return await this.setDreamModeAuto();
     }
 
     if (cmd[0] === "rainbow" || cmd[0] === "rain") {
