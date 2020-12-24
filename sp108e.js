@@ -226,7 +226,7 @@ class sp108e {
     if (cmd[0] === "speed") {
       try {
         const speed = this.getNaturalLanguageNumber(cmd[1]);
-        return await this.setSpeed(speed);
+        return await this.setAnimationSpeed(speed);
       } catch (err) {}
     }
 
