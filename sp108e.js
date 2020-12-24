@@ -142,7 +142,7 @@ class sp108e {
   };
 
   /**
-   * Sets the dreamcolor animation style (1=rainbow) from 1-180
+   * Sets the dreamcolor animation style (0 =auto, 1=rainbow) from 1-180
    * @param {integer} speed any integer 1-180
    */
   setDreamMode = async (mode) => {
@@ -226,7 +226,7 @@ class sp108e {
     if (cmd[0] === "speed") {
       try {
         const speed = this.getNaturalLanguageNumber(cmd[1]);
-        return await this.setSpeed(speed);
+        return await this.setAnimationSpeed(speed);
       } catch (err) {}
     }
 
@@ -237,7 +237,7 @@ class sp108e {
       } catch (err) {}
     }
 
-    if (cmd[0] === "dreammode") {
+    if (cmd[0] === "dreammode" || cmd[0] === "dream" || cmd[0] === "random") {
       try {
         const dreamode = parseInt(cmd[1]) || getNumber(colorname);
         console.log("d", dreamode);
@@ -246,6 +246,14 @@ class sp108e {
         const random = Math.ceil(Math.random() * 180);
         return await this.setDreamMode(random);
       }
+    }
+
+    if (cmd[0] === "auto" || cmd[0] === "loop") {
+      return await this.setDreamMode(0);
+    }
+
+    if (cmd[0] === "rainbow" || cmd[0] === "rain") {
+      return await this.setDreamMode(1);
     }
 
     if (cmd[0] === "next") {
