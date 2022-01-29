@@ -6,7 +6,7 @@
 const { sp108e, ANIM_MODE_FLOW, ANIM_MODE_STATIC } = require("../sp108e");
 
 const sp108e_options = {
-  host: "192.168.86.124",
+  host: "192.168.0.114",
   port: 8189,
 };
 
